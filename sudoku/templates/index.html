@@ -1,0 +1,32 @@
+{% extends 'base.html' %} 
+{% block content %}
+<table>
+    <tbody>
+        {% for y in range(9) %}
+        <tr>
+            {% for x in range(9) %}
+            <td id="{{1+x + y * 9}}" onclick="seletNumber(id)" class="data">{{0}}</td>            
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="description">
+    <div class="description__head">
+        <a href="">정답 구하기</a>
+        <button onclick="completeRest()">전체 초기화</button>
+    </div>
+    <table class="description__table">
+        <tbody> 
+            {% for y in array %}           
+            <tr>
+                {% for x in y %}
+                <td onclick="setNumber(innerText)">{{x}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div><p>숫자를 선택해 주세요.</p></div>
+</div>
+{% endblock content %} 
