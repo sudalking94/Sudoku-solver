@@ -1,14 +1,9 @@
-import os 
-from flask import send_from_directory    
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request,jsonify
 
 
 views = Blueprint("views", __name__)
 
-
-@views.route("/")
-@views.route("/index")
-def index():
+def arrayGenerator():
     array = []
     for x in range(3):
         row = [1,2,3,4,5,6,7,8,9]        
@@ -17,5 +12,17 @@ def index():
         elif x == 1:
             array.append(row[3:6])
         elif x == 2:
-            array.append(row[6:])             
-    return render_template("index.html", array=array)
+            array.append(row[6:])
+    return array
+
+
+@views.route("/")
+def index():       
+    return render_template("index.html", array=arrayGenerator())
+
+@views.route("/result", methods=['GET','POST'])
+def result():
+    if request.method == "POST":                
+        jsonData = request.get_json()        
+        print(jsonData["0"])
+    return render_template("index.html", calculatedNumber = "test",array=arrayGenerator())

@@ -47,7 +47,9 @@ td:focus {
   text-decoration: none;
   width: 50%;
   background-color: skyblue;
+  margin: 1px;
   text-align: center;
+  cursor: pointer;
 }
 
 .description__table {

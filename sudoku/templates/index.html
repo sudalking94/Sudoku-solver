@@ -2,23 +2,27 @@
 {% block content %}
 <table>
     <tbody>
-        {% for y in range(9) %}
-        <tr>
-            {% for x in range(9) %}
-            <td id="{{1+x + y * 9}}" onclick="seletNumber(id)" class="data">{{0}}</td>            
+        {% if calculatedNumber is defined %}
+            <td>test</td>
+        {% else %}
+            {% for y in range(9) %}
+            <tr>
+                {% for x in range(9) %}
+                <td id="{{1+x + y * 9}}" onclick="seletNumber(id)" class="data">{{0}}</td>            
+                {% endfor %}
+            </tr>
             {% endfor %}
-        </tr>
-        {% endfor %}
+        {% endif %}
     </tbody>
 </table>
 <div class="description">
     <div class="description__head">
-        <a href="">정답 구하기</a>
-        <button onclick="completeRest()">전체 초기화</button>
+        <a onclick="submitHandler()">정답 구하기</a>
+        <a onclick="completeRest()">전체 초기화</a>
     </div>
     <table class="description__table">
         <tbody> 
-            {% for y in array %}           
+            {% for y in array %}
             <tr>
                 {% for x in y %}
                 <td onclick="setNumber(innerText)">{{x}}</td>

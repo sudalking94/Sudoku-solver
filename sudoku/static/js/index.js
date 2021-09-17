@@ -40,3 +40,18 @@ function hoverHandler(v) {
     });
   });
 }
+
+function submitHandler() {
+  const data = document.getElementsByClassName("data");
+  const dataList = {};
+  Array.prototype.forEach.call(data, function (obj, i) {
+    dataList[i] = obj.textContent;
+  });
+  fetch(`/result`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(dataList),
+  });
+}
