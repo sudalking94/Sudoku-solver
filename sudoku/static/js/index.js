@@ -41,17 +41,20 @@ function hoverHandler(v) {
   });
 }
 
-function submitHandler() {
+async function submitHandler() {
   const data = document.getElementsByClassName("data");
-  const dataList = {};
-  Array.prototype.forEach.call(data, function (obj, i) {
-    dataList[i] = obj.textContent;
+  const dataList = [];
+
+  await Array.prototype.forEach.call(data, function (obj, i) {
+    dataList.push(obj.textContent);
   });
-  fetch(`/result`, {
+  const jsonData = await fetch(`/result`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(dataList),
-  });
+  })
+    .then((res) => res.json())
+    .then((data) => data);
 }

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request,jsonify
-
+from .solver import backtrackingAlgorithm
 
 views = Blueprint("views", __name__)
 
@@ -20,9 +20,10 @@ def arrayGenerator():
 def index():       
     return render_template("index.html", array=arrayGenerator())
 
-@views.route("/result", methods=['GET','POST'])
+
+@views.route("/result", methods=['POST'])
 def result():
     if request.method == "POST":                
-        jsonData = request.get_json()        
-        print(jsonData["0"])
-    return render_template("index.html", calculatedNumber = "test",array=arrayGenerator())
+        jsonData = request.get_json()                   
+        backtrackingAlgorithm(jsonData)
+    return jsonify({"success":"성공!"})
