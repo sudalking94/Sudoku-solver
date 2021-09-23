@@ -48,7 +48,7 @@ async function submitHandler() {
   await Array.prototype.forEach.call(data, function (obj, i) {
     dataList.push(obj.textContent);
   });
-  const jsonData = await fetch(`/result`, {
+  const { board } = await fetch(`/result`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -57,4 +57,11 @@ async function submitHandler() {
   })
     .then((res) => res.json())
     .then((data) => data);
+
+  board.forEach((eachArray, x) => {
+    eachArray.forEach((e, y) => {
+      const td = document.getElementById(x * 9 + y + 1);
+      td.textContent = e;
+    });
+  });
 }

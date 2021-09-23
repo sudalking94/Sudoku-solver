@@ -68,4 +68,6 @@ def backtrackingAlgorithm(dataList):
     rows = rowGenerator(dataList,9)       # 행단위로 리스트를 재배열   
     board = [rows[f"row{i}"] for i in range(1,10)] # 9행 9열로 재배열       
     solve(board)
+    for i in board:
+        print(i)
     return board
