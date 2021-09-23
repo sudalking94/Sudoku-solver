@@ -25,5 +25,5 @@ def index():
 def result():
     if request.method == "POST":                
         jsonData = request.get_json()                   
-        backtrackingAlgorithm(jsonData)
-    return jsonify({"success":"성공!"})
+        board = backtrackingAlgorithm(jsonData)
+    return jsonify({"board":board})
