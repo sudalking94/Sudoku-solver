@@ -32,12 +32,14 @@ def tableCheck(rows):
         print(f"row{i+1}",rows[f"row{i+1}"])
     print("="*15+"end"+"="*15)
 
-def remove_previous_value(possible_number_list,rows,row_index,columns):
+def removed_value_and_init_value(possible_number_list,rows,row_index,columns):
     del possible_number_list[-1]
-    previous_value =  list(set(possible_number_list[-1]) & set(rows[f"row{row_index}"]))[0]                                            
+    previous_value =  list(set(possible_number_list[-1]) & set(rows[f"row{row_index}"]))[0]                                                
+    possible_number_list[-1].remove(previous_value)    
     search_index = rows[f"row{row_index}"].index(previous_value)                                   
     rows[f"row{row_index}"][search_index] = 0
-    columns[f"col{search_index+1}"][row_index-1] = 0    
+    columns[f"col{search_index+1}"][row_index-1] = 0
+    return possible_number_list[-1]
     
 
 def backtrackingAlgorithm(dataList):
@@ -47,70 +49,35 @@ def backtrackingAlgorithm(dataList):
     number = list(x for x in range(1,10))    
         
     possible_number_list = []
-    
+    init_row_index = 1
+    row_number = rowCheck(rows[f"row{init_row_index}"],number)
+    current_row_index = rows[f"row{init_row_index}"].index(0)                
+    possible_number = colCheck(columns[f"col{current_row_index+1}"],row_number)                     
+    possible_number_list.append(possible_number)
+
+    # cnt = 0                
     for row_index in range(1,10):
-        loop = True                
+        init_row_index = row_index
+        loop = True
         while loop:
-            if 0 in rows[f"row{row_index}"]:
-                row_number = rowCheck(rows[f"row{row_index}"],number)                
-                current_row_index = rows[f"row{row_index}"].index(0)                
-                possible_number = colCheck(columns[f"col{current_row_index+1}"],row_number)                     
-                possible_number_list.append(possible_number)                
-                                
-                if len(possible_number) != 0:                    
+        # while cnt < 5:
+            # cnt += 1
+            # print("cnt",cnt)
+            if 0 in rows[f"row{row_index}"]:                                                                
+                if len(possible_number_list[-1]) != 0:
+                    current_row_index = rows[f"row{row_index}"].index(0)
                     rows[f"row{row_index}"][current_row_index] = possible_number_list[-1][0]
                     columns[f"col{current_row_index+1}"][row_index-1] = possible_number_list[-1][0]
-                    current_possible_row_check(rows,possible_number,row_index,current_row_index)
+                    current_possible_row_check(rows,possible_number,row_index,current_row_index)                    
+                    possible_number = list(filter(lambda x:x != possible_number_list[-1][0],possible_number_list[-1]))
+                    print(possible_number)
+                    possible_number_list.append(possible_number)
+
 
                 elif len(possible_number) == 0:                    
-                    remove_previous_value(possible_number_list,rows,row_index,columns)                    
-                    tableCheck(rows)                    
-                    if 0 in rows[f"row{row_index}"]:
-                        current_row_index = rows[f"row{row_index}"].index(0)
+                    removed_value_and_init_value(possible_number_list,rows,row_index,columns)                    
                     
-                    
-                    i = 1
-                    while True:
-                        if len(possible_number_list[-1]) == 1:
-                            remove_previous_value(possible_number_list,rows,row_index,columns)
-                            if 0 in rows[f"row{row_index}"]:
-                                current_row_index = rows[f"row{row_index}"].index(0)
-                            continue
-                        print("while 다음행",possible_number_list[-1])
-                        
-                            
-                        print("i",i)
-                        rows[f"row{row_index}"][current_row_index] = possible_number_list[-1][i]
-                        columns[f"col{current_row_index+1}"][row_index-1] = possible_number_list[-1][i]
-                        print("첫 번째 대입 가능한 숫자",possible_number_list[-1])
-                        current_possible_row_check(rows,possible_number_list[-1],row_index,current_row_index)
-
-                        row_number = rowCheck(rows[f"row{row_index}"],number)                
-                        current_row_index = rows[f"row{row_index}"].index(0)                
-                        possible_number = colCheck(columns[f"col{current_row_index+1}"],row_number)                     
-                        possible_number_list.append(possible_number)
-
-                        if len(possible_number) == 0:
-                            remove_previous_value(possible_number_list,rows,row_index,columns)
-                            if 0 in rows[f"row{row_index}"]:
-                                current_row_index = rows[f"row{row_index}"].index(0)                                                  
-                            i += 1 # possible_number에 다음 값이 존재하는 경우 index 증가
-                            if i >= len(possible_number_list[-1]): # possible_number_list[-1] 의 배열길이보다 i가 큰 경우 그 이전의 값을 제거
-                                i = 0
-                                # del possible_number_list[-1]
-                                print("두 번째 대입 가능한 숫자",possible_number_list[-2])                                
-                                remove_previous_value(possible_number_list,rows,row_index,columns)
-                                print("두 번째 대입 가능한 숫자를 지운후 행의 값들",rows[f"row{row_index}"])
-                                if 0 in rows[f"row{row_index}"]:
-                                    current_row_index = rows[f"row{row_index}"].index(0)
-                                    i += 1
-                                continue
-                        else:
-                            del possible_number_list[-1]
-                            break
-                # rows[f"row{row_index}"][current_row_index] = possible_number_list[-1][iop]
-                # columns[f"col{current_row_index+1}"][row_index-1] = possible_number_list[-1][iop]
-                # current_possible_row_check(rows,possible_number,row_index,current_row_index)                
+                tableCheck(rows)        
                                                                                           
             else:
                 loop = False
